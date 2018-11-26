@@ -1,0 +1,16 @@
+﻿<Window x:Class="FitnessDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FitnessDesktop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="390.079" Width="537.99">
+    <Grid>
+        <Label Content="{Binding click}" FontSize="50" HorizontalAlignment="Left" Margin="159,105,0,0" VerticalAlignment="Top"/>
+        <Button Content="Button" Command="{Binding StartCamera}" HorizontalAlignment="Left" Margin="55,54,0,0" VerticalAlignment="Top" Width="75"/>
+        <Image Source="{Binding CameraFrame}" Margin="201,30,29,29"/>
+        <Label Content="{Binding clicks}" HorizontalAlignment="Left" Margin="64,238,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
