@@ -103,13 +103,23 @@ namespace FitnessDesktop.ViewModels
                     {
                         var asd = qrCodeElement.ResultPoints[0];
                         System.Drawing.Point[] p = new System.Drawing.Point[4];
-                        p[0] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[0].X-20, (Int32)qrCodeElement.ResultPoints[0].Y+20);//left bottom
-                        p[1] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[1].X-20, (Int32)qrCodeElement.ResultPoints[1].Y-20);//left top
-                        p[2] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[2].X+20, (Int32)qrCodeElement.ResultPoints[2].Y-20);//right top
-                        //p[3] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[2].X + 20, (Int32)qrCodeElement.ResultPoints[0].Y + 20);//right bottom
-                        p[3] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[3].X + 50, (Int32)qrCodeElement.ResultPoints[3].Y + 50);//right bottom
+                        p[0] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[0].X, (Int32)qrCodeElement.ResultPoints[0].Y);//left bottom
+                        p[1] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[1].X, (Int32)qrCodeElement.ResultPoints[1].Y);//left top
+                        p[2] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[2].X, (Int32)qrCodeElement.ResultPoints[2].Y);//right top
+                        p[3] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[3].X, (Int32)qrCodeElement.ResultPoints[3].Y);//right bottom
+                        //p[0] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[0].X-20, (Int32)qrCodeElement.ResultPoints[0].Y+20);//left bottom
+                        //p[1] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[1].X-20, (Int32)qrCodeElement.ResultPoints[1].Y-20);//left top
+                        //p[2] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[2].X+20, (Int32)qrCodeElement.ResultPoints[2].Y-20);//right top
+                        ////p[3] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[2].X + 20, (Int32)qrCodeElement.ResultPoints[0].Y + 20);//right bottom
+                        //p[3] = new System.Drawing.Point((Int32)qrCodeElement.ResultPoints[3].X + 50, (Int32)qrCodeElement.ResultPoints[3].Y + 50);//right bottom
                         VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint(new VectorOfPoint(p));
-                        CvInvoke.DrawContours(_frame, contours, -1, new MCvScalar(0, 255, 0), 4, LineType.AntiAlias);
+                        CvInvoke.Line(_frame, p[1], p[0], new MCvScalar(0, 255, 0), 3);
+                        CvInvoke.Line(_frame, p[1], p[2], new MCvScalar(0, 255, 0), 3);
+
+                        CvInvoke.Line(_frame, p[1], p[3], new MCvScalar(0, 0, 255), 3);
+
+                        CvInvoke.Line(_frame, p[2], p[0], new MCvScalar(255, 0, 0), 3);
+                        //CvInvoke.DrawContours(_frame, contours, -1, new MCvScalar(0, 255, 0), 4, LineType.FourConnected);
                     }
                     catch (Exception)
                     {
