@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using FitnessDesktop.Views;
 
 namespace FitnessDesktop
 {
@@ -15,10 +16,11 @@ namespace FitnessDesktop
     public partial class App : Application
     {
         public DisplayRootRegistry displayRootRegistry = new DisplayRootRegistry();
-        MainWindowViewModel mainWindowViewModel;
+        private MainWindowViewModel mainWindowViewModel;
         public App()//Тут инициализируем окна которые есть в программе
         {
             displayRootRegistry.RegisterWindowType<MainWindowViewModel, MainWindow>();//Главное окно
+            displayRootRegistry.RegisterWindowType<StaffEditingWindowViewModel, StaffEditingWindow>();
             //displayRootRegistry.RegisterWindowType<RemoteControlWindowViewModel, RemoteControlWindow>();
         }
 

@@ -3,6 +3,151 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FitnessDesktop">
     <Application.Resources>
-         
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <Style TargetType="{x:Type RadioButton}" x:Key="MainMenuButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Content="{Binding Content, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ToggleButton.Resources>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="Foreground" Value="#97A3AB"/>
+                                    <Setter Property="Background" Value="#263238"/>
+                                    <Setter Property="BorderBrush" Value="#263238"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Setter Property="Height" Value="55" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <Border>
+                                                    <Grid>
+                                                        <Grid>
+                                                            <Border x:Name="border" CornerRadius="0,0,0,0" Background="#263238"/>
+                                                        </Grid>
+                                                        <ContentPresenter ContentSource="Content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="border" Property="Background" Value="#2A363C"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="border" Property="Background" Value="#242f35"/>
+                                                    </Trigger>
+                                                    
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="False">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                    </Trigger>
+
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Resources>
+                        </ToggleButton>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonDanger">
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Background" Value="#dc3545"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#C82333" />
+                                <Setter Property="Foreground" Value="#fff" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E9595B" />
+                                <Setter Property="Foreground" Value="#fff" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonPrimary">
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Background" Value="#007bff"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0a6fce" />
+                                <Setter Property="Foreground" Value="#fff" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#459cef" />
+                                <Setter Property="Foreground" Value="#fff" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" x:Key="TextBoxStyleDefault">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                                CornerRadius="3"
+                                BorderBrush="#CED4DA"
+                                BorderThickness="1"
+                                Background="#fff">
+
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="false"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--<Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#909090"/>
+                                <Setter Property="Foreground" Value="Red" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>-->
+                            <Trigger Property="IsFocused" Value="true">
+                                <!--<Setter Property="Foreground" Value="Blue" />-->
+                                <Setter Property="BorderBrush" TargetName="border" Value="#62A8EA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        
+        <!--asdasdasdasdasd-->
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
     </Application.Resources>
 </Application>

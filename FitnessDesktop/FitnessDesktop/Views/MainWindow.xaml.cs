@@ -24,5 +24,21 @@ namespace FitnessDesktop
         {
             InitializeComponent();
         }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double width = ListView1.ActualWidth;
+            //3% оставляем чтоб небыло сдвига.
+            double[] widthCol = {
+                37 * width / 100,
+                20 * width / 100,
+                25 * width / 100,
+                15 * width / 100 };
+
+            GridView sdf = (ListView1.View as GridView);
+            Console.WriteLine();
+            for (int i = 0; i < widthCol.Length; i++)
+                sdf.Columns[i].Width = widthCol[i];
+        }
     }
 }

@@ -1,16 +1,237 @@
-﻿<Window x:Class="FitnessDesktop.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessDesktop"
+        xmlns:ViewModels="clr-namespace:FitnessDesktop.ViewModels" x:Class="FitnessDesktop.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="390.079" Width="537.99">
-    <Grid>
-        <Label Content="{Binding click}" FontSize="50" HorizontalAlignment="Left" Margin="159,105,0,0" VerticalAlignment="Top"/>
-        <Button Content="Button" Command="{Binding StartCamera}" HorizontalAlignment="Left" Margin="55,54,0,0" VerticalAlignment="Top" Width="75"/>
-        <Image Source="{Binding CameraFrame}" Margin="201,30,29,29"/>
-        <Label Content="{Binding clicks}" HorizontalAlignment="Left" Margin="64,238,0,0" VerticalAlignment="Top"/>
+        Title="Fintess Project" Width="1280" Height="980" SizeChanged="MainWindow_OnSizeChanged" WindowState="{Binding CurrentWindowState}" WindowStartupLocation="CenterScreen">
 
+
+
+    <!--#region Стили Window resourse-->
+    <Window.Resources>
+        <Style TargetType="{x:Type Grid}" x:Key="MainGridCanvasStyle">
+            <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Setter Property="Background" Value="#f1f4f5"/>
+            <Style.Triggers>
+                <!--Тут мы передаем имя элемента и тем самым мы можем юзать все элементы мхех мда кек лол-->
+                <DataTrigger Binding="{Binding Tag.IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}" x:Key="ListViewItemBase">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="20"/>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+
+                    <Setter Property="Background" Value="#FBFDFD"/>
+
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+
+                    <Setter Property="Background" Value="#fff"/>
+
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F3F7F9"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type ListView}" x:Key="ListViewBase">
+            <Setter Property="Background" Value="#E4EAEC"/>
+        </Style>
+
+        <LinearGradientBrush  x:Key="BlueRinseBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF223B84" Offset="1"/>
+            <GradientStop Color="#FF57A0F4" Offset="0.5"/>
+            <GradientStop Color="#FF4B94EC" Offset="0.5"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="GridViewColumnHeaderGripper"
+               TargetType="Thumb">
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="Transparent">
+                            <Rectangle HorizontalAlignment="Center"
+                                       Width="3"
+                                       Fill="{TemplateBinding Background}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GridViewColumnHeaderStyle"
+        TargetType="GridViewColumnHeader">
+            <Setter Property="HorizontalContentAlignment"
+             Value="Center"/>
+            <Setter Property="VerticalContentAlignment"
+             Value="Center"/>
+            <Setter Property="Background"
+             Value="{StaticResource BlueRinseBrush}"/>
+            <Setter Property="Foreground"
+             Value="{DynamicResource
+                 {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+             TargetType="GridViewColumnHeader">
+                        <Grid>
+                            <Border Name="HeaderBorder"
+                             BorderThickness="0"
+                             BorderBrush="{StaticResource BlueRinseBrush}"
+                             Background="{StaticResource BlueRinseBrush}"
+                             Padding="2,0,2,0">
+                                <ContentPresenter Name="HeaderContent"
+                         TextElement.Foreground="White"
+                         Margin="0,0,0,1"
+                         VerticalAlignment="{TemplateBinding
+                         VerticalContentAlignment}"
+                         HorizontalAlignment="{TemplateBinding
+                         HorizontalContentAlignment}"
+                         RecognizesAccessKey="True"
+                         SnapsToDevicePixels=
+                         "{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <Thumb x:Name="PART_HeaderGripper"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,-9,0"
+                         Style="{StaticResource
+                         GridViewColumnHeaderGripper}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="HeaderBorder"
+                           Property="Background" Value="Yellow"/>
+                                <Setter TargetName="HeaderContent"
+                           Property="TextElement.Foreground"
+                           Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <!--#endregion-->
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.08*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.20*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Background="#62a8ea">
+            <Label Content="Панель управления"  Foreground="White"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" />
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.07*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="1">
+                <DockPanel.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                <Setter Property="Panel.Background" Value="#FBFDFD"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+                <Ellipse Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Ellipse.Fill>
+                        <ImageBrush   Stretch="Fill"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </DockPanel>
+        </Grid>
+
+        <!--#region Кнопки меню-->
+        <StackPanel Grid.Column="0" Grid.Row="1" Background="#263238">
+            <RadioButton x:Name="BtnMainMenu" Content="Главное меню" Style="{StaticResource MainMenuButtonStyle}"/>
+            <RadioButton x:Name="BtnMenuPersonal" Content="Персонал" Style="{StaticResource MainMenuButtonStyle}"/>
+            <!--<RadioButton x:Name="testtest2" Content="Продажа продуктов" Style="{StaticResource MainMenuButtonStyle}"/>-->
+            <RadioButton x:Name="BtnMarkClient" Content="Отметить клиента" Style="{StaticResource MainMenuButtonStyle}"/>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region окна привязаныые к кнопкам в меню-->
+        <Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=BtnMenuPersonal}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.08*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Персонал" FontSize="40" Margin="20,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="20,0,20,0" />
+
+            <ListView ItemsSource="{Binding Person_List}"  x:Name="ListView1" ItemContainerStyle="{StaticResource ListViewItemBase}" Style="{StaticResource ListViewBase}"  AlternationCount="2" Margin="20,36,20,10" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Hyperlink Command="{Binding ElementName=ListView1, Path=DataContext.OpenHyperlinkCommand}" CommandParameter="{Binding}">
+                                            <TextBlock Text="{Binding Path=Name}"/>
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Зарплата" DisplayMemberBinding="{Binding Salary}"/>
+                        <GridViewColumn Header="Почта"     DisplayMemberBinding="{Binding Mail}"/>
+                        <GridViewColumn Header="Действие" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Уволить" Command="{Binding ElementName=ListView1, Path=DataContext.DeletePerson}" CommandParameter="{Binding}" Style="{StaticResource ButtonDanger}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=BtnMarkClient}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.08*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Отметить клиента" FontSize="40" Margin="20,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="20,0,20,0"/>
+
+
+            <Image Grid.Row="1" Source="{Binding CameraFrame}" Margin="10,10,220,49"/>
+            <Label Grid.Row="1" Content="{Binding clicks}" HorizontalAlignment="Left" Margin="944,206,0,0" VerticalAlignment="Top" Height="26" Width="92"/>
+            <Button Grid.Row="1" FontSize="15" Content="Отметить клиента" Command="{Binding StartCamera}" HorizontalAlignment="Right" Margin="0,0,50,50" VerticalAlignment="Bottom" Width="152" Height="61"/>
+        </Grid>
+        <!--<Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=testtest2}">
+            <Button Content="Button" HorizontalAlignment="Left" Margin="272,118,0,0" VerticalAlignment="Top" Width="76"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="236,184,0,0" VerticalAlignment="Top" Width="76"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="250,239,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="362,294,0,0" VerticalAlignment="Top" Width="76"/>
+        </Grid>
+        <Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=testtest4}">
+            <Button Content="Button" HorizontalAlignment="Left" Margin="272,118,0,0" VerticalAlignment="Top" Width="76"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="236,184,0,0" VerticalAlignment="Top" Width="76"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="250,239,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="362,294,0,0" VerticalAlignment="Top" Width="76"/>
+        </Grid>-->
+        <!--#endregion-->
     </Grid>
 </Window>
