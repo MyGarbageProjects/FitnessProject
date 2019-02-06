@@ -182,7 +182,7 @@ namespace FitnessDesktop.ViewModels
             camera.Start();
             
         }
-
+        
         //private QRCodeDecoder decoder;
         //private QRCodeBitmapImage qrbi;
         private QRDecoder Decoder;
