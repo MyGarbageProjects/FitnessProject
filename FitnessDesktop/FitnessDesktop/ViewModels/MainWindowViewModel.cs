@@ -24,121 +24,18 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Util;
 using Emgu.CV.Structure;
 using Emgu.CV.UI;
+using FitnessDatabase;
 
 //QR код
 using QRCodeEncoderDecoderLibrary;
 
+//БД
 namespace FitnessDesktop.ViewModels
 {
-    class MainWindowViewModel : NotificationObject
+    partial class MainWindowViewModel : NotificationObject
     {
         public WindowState CurrentWindowState { get; set; }
 
-        private RelayCommand _openHyperlinkCommand;
-        public RelayCommand OpenHyperlinkCommand
-        {
-            get
-            {
-                return _openHyperlinkCommand ?? (_openHyperlinkCommand = new RelayCommand(ExecuteHyperlink));
-            }
-        }
-
-        //private async void OpenRemoteControlWindow(object obj)
-        //{
-        //    if (true /*Если логин(id того к кому подключаемся) и пароль который я ввел есть на сервер то разрешаем подключение */)
-        //    {
-        //        CurWindowState = WindowState.Minimized;
-        //        var displayRootRegistry = (Application.Current as App)?.displayRootRegistry;
-
-        //        RemoteControlWindowViewModel rcwvm = new RemoteControlWindowViewModel();
-        //        Setting.Add(rcwvm.GetHashCode(), ConnectionText);
-        //        //await displayRootRegistry.ShowModalPresentation(rcwvm);
-        //        if (displayRootRegistry != null) await displayRootRegistry.ShowModalPresentation(rcwvm);
-        //        rcwvm.RdpManager.Disconnect();
-        //        CurWindowState = WindowState.Normal;
-        //    }
-        //    else
-        //    {
-        //        Logger.MessageBox("Неверный пароль или ID или у партнера не запушенна программа");
-        //    }
-        //}
-
-
-        private async void ExecuteHyperlink(object obj)
-        {
-            WindowState lastState = CurrentWindowState;//Запоминаем состояние главного окна
-            CurrentWindowState = WindowState.Minimized;//Минимизируем
-            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
-
-            DisplayRootRegistry displayRootRegistry = (Application.Current as App)?.displayRootRegistry;//Получем объект класса DisplayRootRegistry
-            StaffEditingWindowViewModel staffEditing = new StaffEditingWindowViewModel();//Создаем экземпляр класса для редактирования персонала
-            if (displayRootRegistry != null)
-                await displayRootRegistry.ShowModalPresentation(staffEditing);//Открывам окно
-
-            CurrentWindowState = lastState;//Возвращаем предыдущее состояние до открытия окна редактирования
-            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
-        }
-
-        //Button
-        private RelayCommand _startCamera;
-        public RelayCommand StartCamera
-        {
-            get
-            {
-                return _startCamera ?? (_startCamera = new RelayCommand(startCamera, o=>!isCameraStart));
-            }
-        }
-        private Boolean isCameraStart = false;
-
-        public  ObservableCollection<Person> Person_List { get; set; }
-
-        private RelayCommand _deletePerson;
-        public RelayCommand DeletePerson
-        {
-            get
-            {
-                return _deletePerson ?? (_deletePerson = new RelayCommand(ExecuteDeletePerson));
-            }
-        }
-
-        private void ExecuteDeletePerson(object obj)
-        {
-            Person per = obj as Person;
-
-            if (per != null && Person_List.Contains(per))
-            {
-                if (Notifications.MessageQuestion($"Вы уверены что хотите уволить \r\n{per.Name}?", ""))
-                {
-                    Person_List.Remove(per);
-                }
-            }
-        }
-
-        //Global variable
-        private VideoCapture camera = null;
-        private Mat _frame;
-        //
-
-        //Global GUI variable
-        private BitmapSource cameraFrame;
-        public BitmapSource CameraFrame
-        {
-            get
-            {
-                return cameraFrame;
-            }
-            set
-            {
-                if (cameraFrame!= value)
-                {
-                    cameraFrame = value;
-                    base.RaisePropertyChanged(nameof(CameraFrame));
-                }
-                
-            }
-        }
-        //
-        public int clicks { get; set; }
         public MainWindowViewModel()
         {
             _frame = new Mat();
@@ -151,14 +48,47 @@ namespace FitnessDesktop.ViewModels
 
             //for (int i = 0; i < personnel.Count; i++)
             //{
-                
+
             //    Person_List.Add(new Person() { Index = Convert.ToInt32(personnel[i]["id"]), Name = $"{personnel[i]["name"]} {personnel[i]["surname"]} {personnel[i]["patronymic"]}", LastSalary = "Выдач не было", Mail = "john@doe-family.com" });
 
             //}
 
-                CurrentWindowState = WindowState.Maximized;
+            CurrentWindowState = WindowState.Maximized;
             //CameraFrame = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/photo_default.png"));
         }
+
+
+
+
+
+    }
+
+    partial class MainWindowViewModel
+    {
+        //Global variable
+        private VideoCapture camera = null;
+        private Mat _frame;
+
+        //Global GUI variable
+        private BitmapSource cameraFrame;
+        public BitmapSource CameraFrame
+        {
+            get
+            {
+                return cameraFrame;
+            }
+            set
+            {
+                if (cameraFrame != value)
+                {
+                    cameraFrame = value;
+                    base.RaisePropertyChanged(nameof(CameraFrame));
+                }
+
+            }
+        }
+
+        public int clicks { get; set; }
 
         private void startCamera(object obj)
         {
@@ -180,9 +110,9 @@ namespace FitnessDesktop.ViewModels
                 return;
             }
             camera.Start();
-            
+
         }
-        
+
         //private QRCodeDecoder decoder;
         //private QRCodeBitmapImage qrbi;
         private QRDecoder Decoder;
@@ -262,5 +192,89 @@ namespace FitnessDesktop.ViewModels
 
             }
         }
-    }
+    }//Работа с камерой это потом надо будет переписать
+
+    partial class MainWindowViewModel
+    {
+        private RelayCommand _openHyperlinkCommand;
+        public RelayCommand OpenHyperlinkCommand
+        {
+            get
+            {
+                return _openHyperlinkCommand ?? (_openHyperlinkCommand = new RelayCommand(ExecuteHyperlink));
+            }
+        }
+
+        //private async void OpenRemoteControlWindow(object obj)
+        //{
+        //    if (true /*Если логин(id того к кому подключаемся) и пароль который я ввел есть на сервер то разрешаем подключение */)
+        //    {
+        //        CurWindowState = WindowState.Minimized;
+        //        var displayRootRegistry = (Application.Current as App)?.displayRootRegistry;
+
+        //        RemoteControlWindowViewModel rcwvm = new RemoteControlWindowViewModel();
+        //        Setting.Add(rcwvm.GetHashCode(), ConnectionText);
+        //        //await displayRootRegistry.ShowModalPresentation(rcwvm);
+        //        if (displayRootRegistry != null) await displayRootRegistry.ShowModalPresentation(rcwvm);
+        //        rcwvm.RdpManager.Disconnect();
+        //        CurWindowState = WindowState.Normal;
+        //    }
+        //    else
+        //    {
+        //        Logger.MessageBox("Неверный пароль или ID или у партнера не запушенна программа");
+        //    }
+        //}
+
+
+        private async void ExecuteHyperlink(object obj)
+        {
+            WindowState lastState = CurrentWindowState;//Запоминаем состояние главного окна
+            CurrentWindowState = WindowState.Minimized;//Минимизируем
+            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
+
+            DisplayRootRegistry displayRootRegistry = (Application.Current as App)?.displayRootRegistry;//Получем объект класса DisplayRootRegistry
+            StaffEditingWindowViewModel staffEditing = new StaffEditingWindowViewModel();//Создаем экземпляр класса для редактирования персонала
+            if (displayRootRegistry != null)
+                await displayRootRegistry.ShowModalPresentation(staffEditing);//Открывам окно
+
+            CurrentWindowState = lastState;//Возвращаем предыдущее состояние до открытия окна редактирования
+            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
+        }
+
+        //Button
+        private RelayCommand _startCamera;
+        public RelayCommand StartCamera
+        {
+            get
+            {
+                return _startCamera ?? (_startCamera = new RelayCommand(startCamera, o => !isCameraStart));
+            }
+        }
+        private Boolean isCameraStart = false;
+
+        public ObservableCollection<Person> Person_List { get; set; }
+
+        private RelayCommand _deletePerson;
+        public RelayCommand DeletePerson
+        {
+            get
+            {
+                return _deletePerson ?? (_deletePerson = new RelayCommand(ExecuteDeletePerson));
+            }
+        }
+
+        private void ExecuteDeletePerson(object obj)
+        {
+
+            Person per = obj as Person;
+
+            if (per != null && Person_List.Contains(per))
+            {
+                if (Notifications.MessageQuestion($"Вы уверены что хотите уволить \r\n{per.Name}?", ""))
+                {
+                    Person_List.Remove(per);
+                }
+            }
+        }
+    }//Часть с персоналом
 }

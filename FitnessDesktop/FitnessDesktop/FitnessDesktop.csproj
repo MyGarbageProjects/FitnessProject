@@ -45,6 +45,15 @@
     <Reference Include="Emgu.CV.World, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -57,6 +66,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -86,6 +98,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Database\DatabaseStructure\AccountAmo.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Attribute.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Client.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\ClientSubscription.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\File.cs" />
+    <Compile Include="Models\Database\FitnessDataBaseContext.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Gym.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Image.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Img.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\ImgGroup.cs" />
+    <Compile Include="Models\Database\ITable.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Metrical.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\MyType.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Order.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\OrderProduct.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\PasswordReset.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Personnel.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\PersonnelClient.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\PersonnelRate.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\PersonnelSalary.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Product.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\ProductImage.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Productjoinproduct.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Purchase.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\PurchaseProduct.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Status.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Subscription.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\Training.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\UpdateDataInfo.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\User.cs" />
+    <Compile Include="Models\Database\DatabaseStructure\ValueAttribute.cs" />
+    <Compile Include="Models\Database\LocalDatabase.cs" />
     <Compile Include="Models\GlobalVar.cs" />
     <Compile Include="Models\Personnel.cs" />
     <Compile Include="Models\Person.cs" />
@@ -137,6 +181,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -160,4 +205,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
