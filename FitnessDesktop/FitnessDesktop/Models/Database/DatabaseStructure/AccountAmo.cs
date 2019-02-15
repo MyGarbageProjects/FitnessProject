@@ -10,8 +10,8 @@ using FitnessDatabase;
 
 namespace FitnessDatabase.DatabaseStructure
 {
-    [Table("accountamo")]
-    class AccountAmo : ITable
+    [Table("accountAmo")]
+    public class AccountAmo : ITable
     {
         [Column("id")]
         public Int32 Id { get; set; }

@@ -10,7 +10,7 @@ using FitnessDatabase;
 
 namespace FitnessDatabase.DatabaseStructure
 {
-    class UpdateDataInfo: ITable
+    public class UpdateDataInfo: ITable
     {
         [Column("id")]
         public Int32 Id { get; set; }

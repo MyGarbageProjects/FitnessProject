@@ -9,44 +9,64 @@ namespace FitnessDatabase
 {
     public static class LocalDatabase
     {
-        private static FitnessDataBaseContext LDatabase;
+        public static FitnessDataBaseContext LDatabase;
         static LocalDatabase()
         {
             LDatabase = new FitnessDataBaseContext();
         }
 
-        private static async void InitDB()
+        /// <summary>
+        /// Инициализируем базу данных, и заполняем таблицу UpdateDataInfo данными, и последними обновлениями
+        /// </summary>
+        public static async void InitDB()
         {
-            String[] tableNames =
+            if (!System.IO.File.Exists(FitnessDataBaseContext.DBConnection.Remove(0,14)))
             {
-                "accountamo", "attributes", "clients", "client_subscription", "files", "	gyms", "images", "img",
-                "img_groups", "metrical", "migrations", "orders", "order_product", "password_resets", "personnel",
-                "personnel_client", "personnel_rate", "personnel_salary", "productjoinproducts", "products",
-                "product_image", "purchase", "purchase_product", "statuses", "subscriptions", "trainings", "types",
-                "users", "valueattribute"
-            };
-
-            //FitnessDataBaseContext.
-
-            using (FitnessDataBaseContext fdbc = new FitnessDataBaseContext())
-            {
-                for (int i = 0; i < tableNames.Length; i++)
+                String[] tableNames =
                 {
-                    UpdateDataInfo udi = new UpdateDataInfo
-                    {
-                        TableName          = tableNames[i],
-                        LastID             = -1,
-                        LastUpdateDateTime = fdbc.DateTimeMinValue,
-                        CreatedAt          = DateTime.Now,
-                        UpdatedAt          = DateTime.Now,
-                    };
+                    "accountamo", "attributes", "clients", "client_subscription", "files", "	gyms", "images", "img",
+                    "img_groups", "metrical", "migrations", "orders", "order_product", "password_resets", "personnel",
+                    "personnel_client", "personnel_rate", "personnel_salary", "productjoinproducts", "products",
+                    "product_image", "purchase", "purchase_product", "statuses", "subscriptions", "trainings", "types",
+                    "users", "valueattribute"
+                };
 
-                    fdbc.UpdateDataInfo.Add(udi);
+                //Заполняем список таблиц
+                using (FitnessDataBaseContext fdbc = new FitnessDataBaseContext())
+                {
+                    for (int i = 0; i < tableNames.Length; i++)
+                    {
+                        UpdateDataInfo udi = new UpdateDataInfo
+                        {
+                            TableName          = tableNames[i],
+                            LastID             = -1,
+                            LastUpdateDateTime = fdbc.DateTimeMinValue,
+                            CreatedAt          = DateTime.Now,
+                            UpdatedAt          = DateTime.Now,
+                        };
+
+                        fdbc.UpdateDataInfo.Add(udi);
+                    }
+
+                    await fdbc.SaveChangesAsync();
                 }
 
-                await fdbc.SaveChangesAsync();
+                //Тут пишем код синхранизации с основной базой уот так уот бля
             }
         }
 
+        public async static Task<List<Personnel>> getAllPersonnelAsync()
+        {
+            await Task.Run(() =>
+            {
+                List<Personnel> personnels = new List<Personnel>();
+                using (FitnessDataBaseContext fdbc = new FitnessDataBaseContext())
+                {
+                    personnels = fdbc.Personnels.Local;
+                    fdbc.SaveChanges();
+                }
+                return personnels;
+            });
+        }
     }
 }

@@ -9,8 +9,8 @@ using FitnessDatabase;
 
 namespace FitnessDatabase.DatabaseStructure
 {
-    [Table("productjoinproducts")]
-    class Productjoinproduct:ITable
+    [Table("productJoinProducts")]
+    class Productjoinproduct : ITable
     {
         [Column("id")]
         public Int32 Id { get; set; }

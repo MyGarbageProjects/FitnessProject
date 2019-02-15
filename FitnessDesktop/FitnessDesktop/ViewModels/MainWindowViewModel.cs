@@ -32,37 +32,41 @@ using QRCodeEncoderDecoderLibrary;
 //БД
 namespace FitnessDesktop.ViewModels
 {
+    /// <summary>
+    /// Параметры окна относящиеся ко всем разделам
+    /// </summary>
     partial class MainWindowViewModel : NotificationObject
     {
+        /// <summary>
+        /// Состояние окна
+        /// </summary>
         public WindowState CurrentWindowState { get; set; }
 
         public MainWindowViewModel()
         {
+            FitnessDatabase.LocalDatabase.InitDB();
             _frame = new Mat();
             clicks = 0;
 
-            //Person_List = new ObservableCollection<Person>();
+            Person_List = new ObservableCollection<Person>();
             //List<Dictionary<string, string>> personnel = LocalDatabase.ExecuteSelect($"SELECT personnel.id, personnel.name, personnel.surname, personnel.patronymic, personnel.birthday FROM personnel JOIN statuses ON personnel.status_id = statuses.id WHERE  statuses.name='Персонал активен' AND personnel.gym_id = {GlobalVar.GymID}");
             //List<Dictionary<string, string>> personnel_salary = LocalDatabase.ExecuteSelect($"SELECT personnel_salary.person_id, personnel_salary.salary, personnel_salary.salary_date FROM personnel_salary");
 
+            
 
-            //for (int i = 0; i < personnel.Count; i++)
+            //for (int i = 0; i < LocalDatabase.LDatabase.Personnels; i++)
             //{
-
             //    Person_List.Add(new Person() { Index = Convert.ToInt32(personnel[i]["id"]), Name = $"{personnel[i]["name"]} {personnel[i]["surname"]} {personnel[i]["patronymic"]}", LastSalary = "Выдач не было", Mail = "john@doe-family.com" });
-
             //}
 
             CurrentWindowState = WindowState.Maximized;
             //CameraFrame = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/photo_default.png"));
         }
-
-
-
-
-
     }
 
+    /// <summary>
+    /// Раздел "Отметить клиента"
+    /// </summary>
     partial class MainWindowViewModel
     {
         //Global variable
@@ -192,8 +196,11 @@ namespace FitnessDesktop.ViewModels
 
             }
         }
-    }//Работа с камерой это потом надо будет переписать
+    }
 
+    /// <summary>
+    /// Раздел "Персонал"
+    /// </summary>
     partial class MainWindowViewModel
     {
         private RelayCommand _openHyperlinkCommand;
@@ -276,5 +283,5 @@ namespace FitnessDesktop.ViewModels
                 }
             }
         }
-    }//Часть с персоналом
+    }
 }
