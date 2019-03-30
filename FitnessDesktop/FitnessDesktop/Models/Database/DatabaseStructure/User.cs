@@ -11,7 +11,7 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("users")]
-    class User:ITable
+    public class User:ITable
     {
         [Column("id")]
         public Int32 Id { get; set; }

@@ -102,12 +102,9 @@
     <Compile Include="Models\Database\DatabaseStructure\Attribute.cs" />
     <Compile Include="Models\Database\DatabaseStructure\Client.cs" />
     <Compile Include="Models\Database\DatabaseStructure\ClientSubscription.cs" />
-    <Compile Include="Models\Database\DatabaseStructure\File.cs" />
     <Compile Include="Models\Database\FitnessDataBaseContext.cs" />
     <Compile Include="Models\Database\DatabaseStructure\Gym.cs" />
     <Compile Include="Models\Database\DatabaseStructure\Image.cs" />
-    <Compile Include="Models\Database\DatabaseStructure\Img.cs" />
-    <Compile Include="Models\Database\DatabaseStructure\ImgGroup.cs" />
     <Compile Include="Models\Database\ITable.cs" />
     <Compile Include="Models\Database\DatabaseStructure\Metrical.cs" />
     <Compile Include="Models\Database\DatabaseStructure\MyType.cs" />

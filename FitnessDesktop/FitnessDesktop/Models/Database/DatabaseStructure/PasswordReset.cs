@@ -11,7 +11,7 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("password_resets")]
-    class PasswordReset:ITable
+    public class PasswordReset:ITable
     {
         [Column("id")]
         public Int32 Id { get; set; }

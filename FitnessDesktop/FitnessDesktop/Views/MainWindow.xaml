@@ -166,11 +166,12 @@
         <!--#region Кнопки меню-->
         <StackPanel Grid.Column="0" Grid.Row="1" Background="#263238">
             <RadioButton x:Name="BtnMainMenu" Content="Главное меню" Style="{StaticResource MainMenuButtonStyle}"/>
-            <RadioButton x:Name="BtnMenuPersonal" Content="Персонал" Style="{StaticResource MainMenuButtonStyle}"/>
+            <RadioButton x:Name="BtnMenuPersonal" Content="Персонал" Style="{StaticResource MainMenuButtonStyle}" IsChecked="True"/>
             <!--<RadioButton x:Name="testtest2" Content="Продажа продуктов" Style="{StaticResource MainMenuButtonStyle}"/>-->
             <RadioButton x:Name="BtnMarkClient" Content="Отметить клиента" Style="{StaticResource MainMenuButtonStyle}"/>
         </StackPanel>
         <!--#endregion-->
+
         <!--#region окна привязаныые к кнопкам в меню-->
         <Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=BtnMenuPersonal}">
             <Grid.RowDefinitions>
@@ -180,7 +181,7 @@
             <Label Grid.Row="0" Content="Персонал" FontSize="40" Margin="20,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
             <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="20,0,20,0" />
 
-            <ListView ItemsSource="{Binding Person_List}"  x:Name="ListView1" ItemContainerStyle="{StaticResource ListViewItemBase}" Style="{StaticResource ListViewBase}"  AlternationCount="2" Margin="20,36,20,10" Grid.Row="1">
+            <ListView ItemsSource="{Binding LDatabase.Personnels.Local}"  x:Name="ListView1" ItemContainerStyle="{StaticResource ListViewItemBase}" Style="{StaticResource ListViewBase}"  AlternationCount="2" Margin="20,36,20,10" Grid.Row="1">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Имя">
@@ -206,6 +207,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+
         </Grid>
         <Grid  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainGridCanvasStyle}" Tag="{Binding ElementName=BtnMarkClient}">
             <Grid.RowDefinitions>

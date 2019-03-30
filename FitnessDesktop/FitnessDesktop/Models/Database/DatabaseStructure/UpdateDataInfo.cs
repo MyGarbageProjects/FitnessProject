@@ -19,12 +19,12 @@ namespace FitnessDatabase.DatabaseStructure
         public String TableName { get; set; }
 
         [Column("last_update_id")]
-        public Int32 LastID { get; set; }
+        public Int32? LastID { get; set; }
 
         [Column("last_update_datetime")]
         //[DataType(DataType.Date)]
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime LastUpdateDateTime { get; set; }
+        public DateTime? LastUpdateDateTime { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

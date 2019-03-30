@@ -13,6 +13,12 @@ namespace FitnessDatabase.DatabaseStructure
     [Table("personnel")]
     public class Personnel:ITable
     {
+        //Поля для обратной связи(Они не создаются)
+        public ICollection<PersonnelSalary> psalary { get; set; }
+        //public Gym gym { get; set; }
+        //public User user { get; set; }
+        //public Status status { get; set; }
+        //
         [Column("id")]
         public Int32 Id { get; set; }
 
@@ -29,10 +35,10 @@ namespace FitnessDatabase.DatabaseStructure
         public String Patronymic { get; set; }
 
         [Column("birthday")]
-        public DateTime BDay { get; set; }
+        public DateTime? BDay { get; set; }
 
-        [Column("used_id")]
-        public Int32 UserID { get; set; }
+        [Column("user_id")]
+        public Int32? UserID { get; set; }
 
         [Column("status_id")]
         public Int32 StatusID { get; set; }

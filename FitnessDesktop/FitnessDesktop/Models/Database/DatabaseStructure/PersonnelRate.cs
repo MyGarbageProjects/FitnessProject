@@ -10,8 +10,13 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("personnel_rate")]
-    class PersonnelRate:ITable
+    public class PersonnelRate:ITable
     {
+        //Поля для обратной связи(Они не создаются)
+        //public Personnel person { get; set; }
+        //public MyType type { get; set; }
+        //public Status status { get; set; }
+        //
         [Column("id")]
         public Int32 Id { get; set; }
 

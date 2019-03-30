@@ -12,20 +12,21 @@ namespace FitnessDatabase
         public static FitnessDataBaseContext LDatabase;
         static LocalDatabase()
         {
+            initDB();
             LDatabase = new FitnessDataBaseContext();
         }
 
         /// <summary>
         /// Инициализируем базу данных, и заполняем таблицу UpdateDataInfo данными, и последними обновлениями
         /// </summary>
-        public static async void InitDB()
+        private static async void initDB()
         {
-            if (!System.IO.File.Exists(FitnessDataBaseContext.DBConnection.Remove(0,14)))
+            if (!System.IO.File.Exists(FitnessDataBaseContext.DBConnection.Remove(0, 14)))
             {
                 String[] tableNames =
                 {
-                    "accountamo", "attributes", "clients", "client_subscription", "files", "	gyms", "images", "img",
-                    "img_groups", "metrical", "migrations", "orders", "order_product", "password_resets", "personnel",
+                    "accountamo", "attributes", "clients", "client_subscription", "gyms", "images",
+                    "metrical", "migrations", "orders", "order_product", "password_resets", "personnel",
                     "personnel_client", "personnel_rate", "personnel_salary", "productjoinproducts", "products",
                     "product_image", "purchase", "purchase_product", "statuses", "subscriptions", "trainings", "types",
                     "users", "valueattribute"
@@ -38,11 +39,11 @@ namespace FitnessDatabase
                     {
                         UpdateDataInfo udi = new UpdateDataInfo
                         {
-                            TableName          = tableNames[i],
-                            LastID             = -1,
+                            TableName = tableNames[i],
+                            LastID = -1,
                             LastUpdateDateTime = fdbc.DateTimeMinValue,
-                            CreatedAt          = DateTime.Now,
-                            UpdatedAt          = DateTime.Now,
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now,
                         };
 
                         fdbc.UpdateDataInfo.Add(udi);
@@ -55,18 +56,18 @@ namespace FitnessDatabase
             }
         }
 
-        public async static Task<List<Personnel>> getAllPersonnelAsync()
-        {
-            await Task.Run(() =>
-            {
-                List<Personnel> personnels = new List<Personnel>();
-                using (FitnessDataBaseContext fdbc = new FitnessDataBaseContext())
-                {
-                    personnels = fdbc.Personnels.Local;
-                    fdbc.SaveChanges();
-                }
-                return personnels;
-            });
-        }
+        //public async static Task<List<Personnel>> getAllPersonnelAsync()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        List<Personnel> personnels = new List<Personnel>();
+        //        using (DataBaseContext fdbc = new DataBaseContext())
+        //        {
+        //            personnels = fdbc.Personnels.Local;
+        //            fdbc.SaveChanges();
+        //        }
+        //        return personnels;
+        //    });
+        //}
     }
 }

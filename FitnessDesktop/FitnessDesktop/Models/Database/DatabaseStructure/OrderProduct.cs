@@ -10,8 +10,13 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("order_product")]
-    class OrderProduct:ITable
+    public class OrderProduct:ITable
     {
+        //Поля для обратной связи(Они не создаются)
+        //public Order order { get; set; }
+        //public Product product { get; set; }
+        //public Status status { get; set; }
+        //
         [Column("id")]
         public Int32 Id { get; set; }
 

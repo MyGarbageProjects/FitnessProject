@@ -76,7 +76,6 @@ namespace FitnessDesktop
         public async Task ShowModalPresentation(object vm)
         {
             var window = CreateWindowInstanceWithVM(vm);
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             await window.Dispatcher.InvokeAsync(() => window.ShowDialog());
         }
 

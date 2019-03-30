@@ -20,16 +20,13 @@ namespace FitnessDesktop
         public App()//Тут инициализируем окна которые есть в программе
         {
             displayRootRegistry.RegisterWindowType<MainWindowViewModel, MainWindow>();//Главное окно
-            displayRootRegistry.RegisterWindowType<StaffEditingWindowViewModel, StaffEditingWindow>();
-            //displayRootRegistry.RegisterWindowType<RemoteControlWindowViewModel, RemoteControlWindow>();
+            displayRootRegistry.RegisterWindowType<StaffEditingWindowViewModel, StaffEditingWindow>();//Окно редактирования людей
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             mainWindowViewModel = new MainWindowViewModel();
-
             await displayRootRegistry.ShowModalPresentation(mainWindowViewModel);
 
             Shutdown();

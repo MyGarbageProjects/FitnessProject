@@ -13,6 +13,11 @@ namespace FitnessDatabase.DatabaseStructure
     [Table("clients")]
     public class Client:ITable
     {
+        //Поля для обратной связи(Они не создаются)
+        //public Gym gym { get; set; }
+        //public Status status { get; set; }
+        //public AccountAmo amocmr { get; set; }
+        //
         [Column("id")]
         public Int32 Id { get; set; }
 

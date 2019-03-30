@@ -10,30 +10,26 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("personnel_salary")]
-    class PersonnelSalary:ITable
+    public class PersonnelSalary:ITable
     {
-        [Column("id")]
+        //Поля для обратной связи(Они не создаются)
+        //public Personnel person { get; set; }
+        //public Status status { get; set; }
         public Int32 Id { get; set; }
 
-        [Column("person_id")]
-        public Int32 PersonID { get; set; }
+        public Personnel Person { get; set; }
+        //public Int32 PersonID { get; set; }
 
-        [Column("salary")]
         public Int32 Salary { get; set; }
 
-        [Column("salary_date")]
         public DateTime SalaryDate { get; set; }
 
-        [Column("remainder")]
         public Int32 Remainder { get; set; }
 
-        [Column("status_id")]
         public Int32 StatusID { get; set; }
 
-        [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 
-        [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
     }
 }

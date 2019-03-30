@@ -10,8 +10,14 @@ using FitnessDatabase;
 namespace FitnessDatabase.DatabaseStructure
 {
     [Table("productJoinProducts")]
-    class Productjoinproduct : ITable
+    public class Productjoinproduct : ITable
     {
+        //Поля для обратной связи(Они не создаются)
+        //public Product product { get; set; }
+        //public Product child_product { get; set; }
+        //public Metrical metrical { get; set; }
+        //public Status status { get; set; }
+        //
         [Column("id")]
         public Int32 Id { get; set; }
 

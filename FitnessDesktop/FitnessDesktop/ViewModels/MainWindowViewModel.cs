@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -44,23 +45,71 @@ namespace FitnessDesktop.ViewModels
 
         public MainWindowViewModel()
         {
-            FitnessDatabase.LocalDatabase.InitDB();
-            _frame = new Mat();
-            clicks = 0;
-
-            Person_List = new ObservableCollection<Person>();
-            //List<Dictionary<string, string>> personnel = LocalDatabase.ExecuteSelect($"SELECT personnel.id, personnel.name, personnel.surname, personnel.patronymic, personnel.birthday FROM personnel JOIN statuses ON personnel.status_id = statuses.id WHERE  statuses.name='Персонал активен' AND personnel.gym_id = {GlobalVar.GymID}");
-            //List<Dictionary<string, string>> personnel_salary = LocalDatabase.ExecuteSelect($"SELECT personnel_salary.person_id, personnel_salary.salary, personnel_salary.salary_date FROM personnel_salary");
-
-            
-
-            //for (int i = 0; i < LocalDatabase.LDatabase.Personnels; i++)
-            //{
-            //    Person_List.Add(new Person() { Index = Convert.ToInt32(personnel[i]["id"]), Name = $"{personnel[i]["name"]} {personnel[i]["surname"]} {personnel[i]["patronymic"]}", LastSalary = "Выдач не было", Mail = "john@doe-family.com" });
-            //}
-
             CurrentWindowState = WindowState.Maximized;
-            //CameraFrame = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/photo_default.png"));
+
+            ConstructorsClassCheckClient();
+            ConstructorsClassPersonnel();
+        }
+
+        partial void ConstructorsClassCheckClient();
+        partial void ConstructorsClassPersonnel();
+    }
+
+    /// <summary>
+    /// Раздел "Персонал"
+    /// </summary>
+    partial class MainWindowViewModel
+    {
+        partial void ConstructorsClassPersonnel()
+        {
+            //тут конструктор
+            LocalDatabase.LDatabase.UpdateDataInfo.Load();
+        }
+
+        private RelayCommand _openHyperlinkCommand;
+        public RelayCommand OpenHyperlinkCommand
+        {
+            get
+            {
+                return _openHyperlinkCommand ?? (_openHyperlinkCommand = new RelayCommand(ExecuteHyperlink));
+            }
+        }
+
+        private async void ExecuteHyperlink(object obj)
+        {
+            WindowState lastState = CurrentWindowState;//Запоминаем состояние главного окна
+            CurrentWindowState = WindowState.Minimized;//Минимизируем
+            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
+
+            DisplayRootRegistry displayRootRegistry = (Application.Current as App)?.displayRootRegistry;//Получем объект класса DisplayRootRegistry
+            StaffEditingWindowViewModel staffEditing = new StaffEditingWindowViewModel();//Создаем экземпляр класса для редактирования персонала
+            if (displayRootRegistry != null)
+                await displayRootRegistry.ShowModalPresentation(staffEditing);//Открывам окно
+
+            CurrentWindowState = lastState;//Возвращаем предыдущее состояние до открытия окна редактирования
+            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
+        }
+
+        private RelayCommand _deletePerson;
+        public RelayCommand DeletePerson
+        {
+            get
+            {
+                return _deletePerson ?? (_deletePerson = new RelayCommand(ExecuteDeletePerson));
+            }
+        }
+
+        private void ExecuteDeletePerson(object obj)
+        {
+            //Person per = obj as Person;
+
+            //if (per != null && Person_List.Contains(per))
+            //{
+            //    if (Notifications.MessageQuestion($"Вы уверены что хотите уволить \r\n{per.Name}?", ""))
+            //    {
+            //        Person_List.Remove(per);
+            //    }
+            //}
         }
     }
 
@@ -69,6 +118,12 @@ namespace FitnessDesktop.ViewModels
     /// </summary>
     partial class MainWindowViewModel
     {
+        partial void ConstructorsClassCheckClient()
+        {
+            _frame = new Mat();
+            clicks = 0;
+        }
+
         //Global variable
         private VideoCapture camera = null;
         private Mat _frame;
@@ -91,6 +146,17 @@ namespace FitnessDesktop.ViewModels
 
             }
         }
+
+        //Button
+        private RelayCommand _startCamera;
+        public RelayCommand StartCamera
+        {
+            get
+            {
+                return _startCamera ?? (_startCamera = new RelayCommand(startCamera, o => !isCameraStart));
+            }
+        }
+        private Boolean isCameraStart = false;
 
         public int clicks { get; set; }
 
@@ -194,93 +260,6 @@ namespace FitnessDesktop.ViewModels
                 }
 
 
-            }
-        }
-    }
-
-    /// <summary>
-    /// Раздел "Персонал"
-    /// </summary>
-    partial class MainWindowViewModel
-    {
-        private RelayCommand _openHyperlinkCommand;
-        public RelayCommand OpenHyperlinkCommand
-        {
-            get
-            {
-                return _openHyperlinkCommand ?? (_openHyperlinkCommand = new RelayCommand(ExecuteHyperlink));
-            }
-        }
-
-        //private async void OpenRemoteControlWindow(object obj)
-        //{
-        //    if (true /*Если логин(id того к кому подключаемся) и пароль который я ввел есть на сервер то разрешаем подключение */)
-        //    {
-        //        CurWindowState = WindowState.Minimized;
-        //        var displayRootRegistry = (Application.Current as App)?.displayRootRegistry;
-
-        //        RemoteControlWindowViewModel rcwvm = new RemoteControlWindowViewModel();
-        //        Setting.Add(rcwvm.GetHashCode(), ConnectionText);
-        //        //await displayRootRegistry.ShowModalPresentation(rcwvm);
-        //        if (displayRootRegistry != null) await displayRootRegistry.ShowModalPresentation(rcwvm);
-        //        rcwvm.RdpManager.Disconnect();
-        //        CurWindowState = WindowState.Normal;
-        //    }
-        //    else
-        //    {
-        //        Logger.MessageBox("Неверный пароль или ID или у партнера не запушенна программа");
-        //    }
-        //}
-
-
-        private async void ExecuteHyperlink(object obj)
-        {
-            WindowState lastState = CurrentWindowState;//Запоминаем состояние главного окна
-            CurrentWindowState = WindowState.Minimized;//Минимизируем
-            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
-
-            DisplayRootRegistry displayRootRegistry = (Application.Current as App)?.displayRootRegistry;//Получем объект класса DisplayRootRegistry
-            StaffEditingWindowViewModel staffEditing = new StaffEditingWindowViewModel();//Создаем экземпляр класса для редактирования персонала
-            if (displayRootRegistry != null)
-                await displayRootRegistry.ShowModalPresentation(staffEditing);//Открывам окно
-
-            CurrentWindowState = lastState;//Возвращаем предыдущее состояние до открытия окна редактирования
-            base.RaisePropertyChanged(nameof(CurrentWindowState));//Биндим состояние
-        }
-
-        //Button
-        private RelayCommand _startCamera;
-        public RelayCommand StartCamera
-        {
-            get
-            {
-                return _startCamera ?? (_startCamera = new RelayCommand(startCamera, o => !isCameraStart));
-            }
-        }
-        private Boolean isCameraStart = false;
-
-        public ObservableCollection<Person> Person_List { get; set; }
-
-        private RelayCommand _deletePerson;
-        public RelayCommand DeletePerson
-        {
-            get
-            {
-                return _deletePerson ?? (_deletePerson = new RelayCommand(ExecuteDeletePerson));
-            }
-        }
-
-        private void ExecuteDeletePerson(object obj)
-        {
-
-            Person per = obj as Person;
-
-            if (per != null && Person_List.Contains(per))
-            {
-                if (Notifications.MessageQuestion($"Вы уверены что хотите уволить \r\n{per.Name}?", ""))
-                {
-                    Person_List.Remove(per);
-                }
             }
         }
     }
